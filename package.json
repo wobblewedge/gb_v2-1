@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "pullEnv": "rm -rf .env && vercel env pull",
+    "dev": "yarn pullEnv && next dev",
     "build": "next build",
     "start": "next start"
   },
