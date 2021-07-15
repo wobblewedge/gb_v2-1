@@ -6,7 +6,7 @@ import {
   Container,
   Text,
   Heading,
-  Grid,
+  Button,
   TextField,
 } from "@modulz/design-system";
 import { GlobalContainer } from "../components/GlobalContainer";
@@ -53,7 +53,7 @@ export default function Musings() {
         <Container size="2" css={{ py: "$6" }}>
           <Box
             css={{
-              p: "$4",
+              p: "$2",
             }}
           >
             <TextField
@@ -64,27 +64,25 @@ export default function Musings() {
             />
           </Box>
 
-          <Grid
-            css={{
-              columnGap: "$5",
-              rowGap: "$5",
-              gridTemplateColumns: "repeat(3, 1fr)",
-            }}
-          >
-            {filteredMusings.length === 0 && <Box>Oops!</Box>}
-            {filteredMusings.map((m) => (
-              <Card key={m.id}>
-                <Box css={{ p: "$4" }}>
-                  <Box>
-                    <Heading>{m.title}</Heading>
-                  </Box>
-                  <Box css={{ mt: "$2", my: "$1" }}>
-                    <Text>{m.musing}</Text>
-                  </Box>
+          {filteredMusings.length === 0 && (
+            <Box css={{ width: "100vw", mt: "$5" }}>
+              <Text size="3" css={{ color: "$slate9", pl: "$4" }}>
+                Nothing here, friend
+              </Text>
+            </Box>
+          )}
+          {filteredMusings.map((m) => (
+            <Card key={m.id} css={{ my: "$3" }}>
+              <Box css={{ p: "$4" }}>
+                <Box>
+                  <Heading>{m.title}</Heading>
                 </Box>
-              </Card>
-            ))}
-          </Grid>
+                <Box css={{ mt: "$2", my: "$1" }}>
+                  <Text>{m.musing}</Text>
+                </Box>
+              </Box>
+            </Card>
+          ))}
         </Container>
       </GlobalContainer>
     );
