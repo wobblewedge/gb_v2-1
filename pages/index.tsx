@@ -1,28 +1,89 @@
-import { useEffect } from "react";
+import type { Musing } from "../db/types";
+import { useEffect, useState } from "react";
+import {
+  Box,
+  Card,
+  Container,
+  Text,
+  Heading,
+  Grid,
+  TextField,
+} from "@modulz/design-system";
 
-export default function () {
-  // useEffect(() => {
-  //   findStuff();
-  // }, []);
+import LoadingScreen from "../components/LoadingScreen";
 
-  // const findStuff = async () => {
-  //   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  //   const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_KEY;
-
-  //   if (!supabaseKey || !supabaseUrl) {
-  //     throw new Error("Missing db config in env");
-  //   }
-
-  //   const supabase = createClient(supabaseUrl, supabaseKey);
-
-  //   const { data: musings, error } = await supabase.from("musings").select("*");
-
-  //   console.log(musings);
-  // };
-
-  return (
-    <div className="container" style={{ padding: "50px 0 100px 0" }}>
-      yo
-    </div>
+export default function HomeScreen() {
+  const [allMusings, setAllMusings] = useState<Array<Musing> | undefined>(
+    undefined
   );
+  const [filteredMusings, setFilteredMusings] = useState<
+    Array<Musing> | undefined
+  >(undefined);
+  const [search, setSearch] = useState("");
+
+  useEffect(() => {
+    fetch("/api/musings")
+      .then((res) => res.json())
+      .then((data) => {
+        setAllMusings(data.musings);
+        setFilteredMusings(data.musings);
+      })
+      .catch((err) => console.error(err));
+  }, []);
+
+  useEffect(() => {
+    if (search === "") {
+      setFilteredMusings(allMusings);
+    } else {
+      setFilteredMusings(
+        allMusings?.filter(
+          (m) =>
+            m.title?.toLowerCase().includes(search?.toLowerCase()) ||
+            m.musing?.toLowerCase().includes(search?.toLowerCase())
+        )
+      );
+    }
+  }, [search]);
+
+  if (filteredMusings === undefined) {
+    return <LoadingScreen />;
+  } else {
+    return (
+      <Container size="2" css={{ py: "$6" }}>
+        <Box
+          css={{
+            p: "$4",
+          }}
+        >
+          <TextField
+            size="2"
+            value={search}
+            placeholder="Find something tasty"
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </Box>
+
+        <Grid
+          css={{
+            columnGap: "$5",
+            rowGap: "$5",
+            gridTemplateColumns: "repeat(3, 1fr)",
+          }}
+        >
+          {filteredMusings.map((m) => (
+            <Card key={m.id}>
+              <Box css={{ p: "$4" }}>
+                <Box>
+                  <Heading>{m.title}</Heading>
+                </Box>
+                <Box css={{ mt: "$2", my: "$1" }}>
+                  <Text>{m.musing}</Text>
+                </Box>
+              </Box>
+            </Card>
+          ))}
+        </Grid>
+      </Container>
+    );
+  }
 }

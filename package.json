@@ -1,5 +1,5 @@
 {
-  "name": "next-storage",
+  "name": "gb_v2",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -9,7 +9,7 @@
     "start": "next start"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^1.18.1",
+    "@modulz/design-system": "0.3.3",
     "nanoid": "^3.1.23",
     "next": "10.0.9",
     "pg": "^8.6.0",
