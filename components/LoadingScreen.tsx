@@ -1,7 +1,7 @@
-import React from "react";
-import { Box, Text, Flex } from "@modulz/design-system";
+import { Box, Text } from "@modulz/design-system";
+import { GlobalContainer } from "./GlobalContainer";
 
-const LoadingScreen = () => (
+export const LoadingScreen = () => (
   <GlobalContainer
     css={{
       alignItems: "center",
@@ -16,31 +16,3 @@ const LoadingScreen = () => (
     </Box>
   </GlobalContainer>
 );
-
-const GlobalContainer = (props: React.ComponentProps<typeof Flex>) => {
-  return (
-    <Flex
-      {...props}
-      css={{
-        position: "relative",
-        minWidth: 320,
-        minHeight: "100vh",
-        flexDirection: "column",
-        backgroundColor: "$gray1",
-
-        color: "hiContrast",
-        cursor: "default",
-        fontFamily: "$untitled",
-        overflowWrap: "break-word",
-        WebkitFontSmoothing: "antialiased" as any,
-        MozOsxFontSmoothing: "grayscale" as any,
-        "::selection": {
-          backgroundColor: "$blue5",
-        },
-        ...(props.css as any),
-      }}
-    />
-  );
-};
-
-export default LoadingScreen;
