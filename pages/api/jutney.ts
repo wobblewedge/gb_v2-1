@@ -7,7 +7,7 @@ export default async function handler(
   res: NextApiResponse
 ) {
   switch (req.method) {
-    case "GET":
+    case "POST":
       try {
         const musings = await getAllMusings();
 
@@ -15,7 +15,7 @@ export default async function handler(
         const jutney = new MessagingResponse();
         jutney.message("The Robots are coming! Head for the hills!");
         res.writeHead(200, { "Content-Type": "text/xml" });
-        
+
         res.end(jutney.toString());
         return;
       } catch (err) {
