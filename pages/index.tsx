@@ -118,6 +118,7 @@ export default function Musings() {
           <Container size="2" css={{ py: "$6" }}>
             <Box>
               <TextField
+                type="search"
                 size="2"
                 value={search}
                 placeholder="Find something tasty"
@@ -151,8 +152,8 @@ export default function Musings() {
             </Box>
 
             {filteredMusings.length === 0 && (
-              <Box css={{ width: "100vw", mt: "$3" }}>
-                <Text size="3" css={{ color: "$slate9", pl: "$4" }}>
+              <Box css={{ mt: "$4" }}>
+                <Text size="3" css={{ color: "$slate9", pl: "$1" }}>
                   Nothing here, friend
                 </Text>
               </Box>
