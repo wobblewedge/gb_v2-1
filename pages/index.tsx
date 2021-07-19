@@ -12,6 +12,7 @@ import {
   DialogContent,
   TextArea,
   Button,
+  Flex,
 } from "@modulz/design-system";
 import { GlobalContainer } from "../components/GlobalContainer";
 import { LoadingScreen } from "../components/LoadingScreen";
@@ -33,13 +34,15 @@ export default function Musings() {
     undefined
   );
   const [editSelectedMusing, setEditselectedMusing] = useState(false);
+  const [createNewMusing, setCreateNewMusing] = useState(false);
   const [search, setSearch] = useState("");
   const [waiting, setWaiting] = useState(false);
 
   useEffect(() => {
     fetchMusings().then(({ musings }) => {
-      setAllMusings(musings);
-      setFilteredMusings(musings);
+      const shuffled = shuffle(musings);
+      setAllMusings(shuffled);
+      setFilteredMusings(shuffled);
     });
   }, []);
 
@@ -66,28 +69,35 @@ export default function Musings() {
 
     if (id && title?.value && musing?.value) {
       updateMusing({ id, title: title.value, musing: musing.value }).then((m) =>
-        mutateState(m)
+        mutateMusing(m)
       );
     }
   };
 
   const post = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setWaiting(true);
     const formInputs: IFormInputs = event.currentTarget.elements;
     const { title, musing } = formInputs;
 
     if (title?.value && musing?.value) {
-      newMusing({ title: title.value, musing: musing.value })
-        .then((m) => mutateState(m))
-        .then();
+      newMusing({ title: title.value, musing: musing.value }).then((m) =>
+        addNewMusing(m)
+      );
     }
   };
 
-  const mutateState = (musingToUpdate: Musing) => {
+  const mutateMusing = (musingToUpdate: Musing) => {
     const newState = JSON.parse(JSON.stringify(allMusings));
     const index = newState.findIndex((x: Musing) => x.id === musingToUpdate.id);
     newState[index].title = musingToUpdate.title;
     newState[index].musing = musingToUpdate.musing;
+    resetState(newState);
+  };
+
+  const addNewMusing = (newMusing: Musing) => {
+    const newState: Musing[] = JSON.parse(JSON.stringify(allMusings));
+    newState.unshift(newMusing);
     resetState(newState);
   };
 
@@ -97,6 +107,7 @@ export default function Musings() {
     setWaiting(false);
     setSelectedMusing(undefined);
     setEditselectedMusing(false);
+    setCreateNewMusing(false);
     setSearch("");
   };
 
@@ -112,12 +123,36 @@ export default function Musings() {
                 p: "$2",
               }}
             >
-              <TextField
-                size="2"
-                value={search}
-                placeholder="Find something tasty"
-                onChange={(e) => setSearch(e.target.value)}
-              />
+              <Flex>
+                <TextField
+                  size="2"
+                  value={search}
+                  placeholder="Find something tasty"
+                  onChange={(e) => setSearch(e.target.value)}
+                />
+                <Button
+                  size="2"
+                  variant="blue"
+                  css={{ mx: "$2" }}
+                  onClick={() => setCreateNewMusing(true)}
+                >
+                  New musing
+                </Button>
+                <Button
+                  size="2"
+                  onClick={() => {
+                    if (allMusings) {
+                      const shuffled = shuffle(
+                        JSON.parse(JSON.stringify(allMusings))
+                      );
+                      setAllMusings(shuffled);
+                      setFilteredMusings(shuffled);
+                    }
+                  }}
+                >
+                  Shuffle
+                </Button>
+              </Flex>
             </Box>
 
             {filteredMusings.length === 0 && (
@@ -163,9 +198,16 @@ export default function Musings() {
             <DialogContent css={{ minWidth: 400 }}>
               {editSelectedMusing !== true ? (
                 <Box css={{ p: "$4" }}>
-                  <Box>
-                    <Heading>{selectedMusing?.title}</Heading>
-                  </Box>
+                  <Flex css={{ justifyContent: "space-between", alignItems: 'center' }}>
+                    <Box>
+                      <Heading>{selectedMusing?.title}</Heading>
+                    </Box>
+                    <Box>
+                      <Text css={{ color: theme.colors.gray9 }} size="1">
+                        {selectedMusing?.id}
+                      </Text>
+                    </Box>
+                  </Flex>
                   <Box css={{ mt: "$2", my: "$1" }}>
                     <Text>{selectedMusing?.musing}</Text>
                   </Box>
@@ -194,6 +236,7 @@ export default function Musings() {
                     <Box css={{ mt: "$2", my: "$1" }}>
                       <TextArea
                         name="musing"
+                        size="2"
                         defaultValue={selectedMusing?.musing}
                         placeholder="Musing"
                       />
@@ -209,7 +252,55 @@ export default function Musings() {
             </DialogContent>
           </Dialog>
         )}
+        {createNewMusing && (
+          <Dialog
+            open={createNewMusing}
+            onOpenChange={() => {
+              setCreateNewMusing(false);
+            }}
+          >
+            <DialogContent css={{ minWidth: 400 }}>
+              <form onSubmit={post}>
+                <Box css={{ p: "$4" }}>
+                  <Box>
+                    <TextField
+                      autoFocus
+                      name="title"
+                      size="2"
+                      placeholder="Title"
+                    />
+                  </Box>
+                  <Box css={{ mt: "$2", my: "$1" }}>
+                    <TextArea size="2" name="musing" placeholder="Musing" />
+                  </Box>
+                  <Box css={{ mt: "$2" }}>
+                    <Button type="submit" disabled={waiting}>
+                      Save
+                    </Button>
+                  </Box>
+                </Box>
+              </form>
+            </DialogContent>
+          </Dialog>
+        )}
       </>
     );
   }
+}
+
+function shuffle(array: Musing[]) {
+  let currentIndex = array.length,
+    randomIndex;
+
+  while (0 !== currentIndex) {
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+
+    [array[currentIndex], array[randomIndex]] = [
+      array[randomIndex],
+      array[currentIndex],
+    ];
+  }
+
+  return array;
 }

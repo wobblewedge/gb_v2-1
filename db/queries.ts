@@ -59,5 +59,5 @@ export const deleteMusing = async (id: string): Promise<void> =>
 
 const createId = customAlphabet(
   "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",
-  19
+  9
 );
