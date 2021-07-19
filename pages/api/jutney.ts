@@ -9,12 +9,15 @@ export default async function handler(
   switch (req.method) {
     case "GET":
       try {
-        const musings = await getAllMusings();
-
-        console.log('here');
         const { MessagingResponse } = twiml;
         const jutney = new MessagingResponse();
-        jutney.message("The Robots are coming! Head for the hills!");
+
+        const allMusings = await getAllMusings();
+        const { title, musing } =
+          allMusings[Math.floor(Math.random() * allMusings.length)];
+
+        const message = title !== "" ? `${title} is ${musing}` : `${musing}`;
+        jutney.message(message);
         res.writeHead(200, { "Content-Type": "text/xml" });
         res.end(jutney.toString());
         return;
