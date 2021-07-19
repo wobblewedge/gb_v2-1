@@ -14,8 +14,6 @@ import {
   Button,
   Flex,
 } from "@modulz/design-system";
-import { GlobalContainer } from "../components/GlobalContainer";
-import { LoadingScreen } from "../components/LoadingScreen";
 import { fetchMusings, updateMusing, newMusing } from "../db/client";
 
 interface IFormInputs extends HTMLFormControlsCollection {
@@ -198,7 +196,12 @@ export default function Musings() {
             <DialogContent css={{ minWidth: 400 }}>
               {editSelectedMusing !== true ? (
                 <Box css={{ p: "$4" }}>
-                  <Flex css={{ justifyContent: "space-between", alignItems: 'center' }}>
+                  <Flex
+                    css={{
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                    }}
+                  >
                     <Box>
                       <Heading>{selectedMusing?.title}</Heading>
                     </Box>
@@ -304,3 +307,45 @@ function shuffle(array: Musing[]) {
 
   return array;
 }
+
+const GlobalContainer = (props: React.ComponentProps<typeof Flex>) => {
+  return (
+    <Flex
+      {...props}
+      css={{
+        position: "relative",
+        minWidth: 320,
+        minHeight: "100vh",
+        flexDirection: "column",
+        backgroundColor: "$gray4",
+
+        color: "hiContrast",
+        cursor: "default",
+        fontFamily: "$untitled",
+        overflowWrap: "break-word",
+        WebkitFontSmoothing: "antialiased" as any,
+        MozOsxFontSmoothing: "grayscale" as any,
+        "::selection": {
+          backgroundColor: "$blue5",
+        },
+        ...(props.css as any),
+      }}
+    />
+  );
+};
+
+const LoadingScreen = () => (
+  <GlobalContainer
+    css={{
+      alignItems: "center",
+      backgroundColor: "$loContrast",
+      justifyContent: "center",
+    }}
+  >
+    <Box css={{ mb: "10vh", userSelect: "none" }}>
+      <Text size="2" css={{ color: "$slate9" }}>
+        Loading…
+      </Text>
+    </Box>
+  </GlobalContainer>
+);
