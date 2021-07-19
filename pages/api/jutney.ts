@@ -7,15 +7,15 @@ export default async function handler(
   res: NextApiResponse
 ) {
   switch (req.method) {
-    case "POST":
+    case "GET":
       try {
         const musings = await getAllMusings();
 
+        console.log('here');
         const { MessagingResponse } = twiml;
         const jutney = new MessagingResponse();
         jutney.message("The Robots are coming! Head for the hills!");
         res.writeHead(200, { "Content-Type": "text/xml" });
-
         res.end(jutney.toString());
         return;
       } catch (err) {
