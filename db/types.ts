@@ -1,5 +1,5 @@
 export type Musing = {
   id: string;
-  title: string;
+  title: string | null;
   musing: string;
 };

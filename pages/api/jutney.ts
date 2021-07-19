@@ -16,7 +16,7 @@ export default async function handler(
         const { title, musing } =
           allMusings[Math.floor(Math.random() * allMusings.length)];
 
-        const message = title !== "" ? `(${title}) ${musing}` : `${musing}`;
+        const message = title ? `(${title}) ${musing}` : `${musing}`;
         jutney.message(message);
         res.writeHead(200, { "Content-Type": "text/xml" });
         res.end(jutney.toString());
