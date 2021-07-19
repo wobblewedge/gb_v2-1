@@ -126,6 +126,7 @@ export default function Musings() {
               <Flex css={{ mt: "$2", justifyContent: "space-between" }}>
                 <Button
                   size="2"
+                  css={{ mr: " $7" }}
                   onClick={() => {
                     if (allMusings) {
                       const shuffled = shuffle(
@@ -139,9 +140,9 @@ export default function Musings() {
                   Shuffle
                 </Button>
                 <Button
+                  css={{ ml: " $7" }}
                   size="2"
                   variant="blue"
-                  css={{ mr: "$2" }}
                   onClick={() => setCreateNewMusing(true)}
                 >
                   New musing
