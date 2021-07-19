@@ -116,26 +116,14 @@ export default function Musings() {
       <>
         <GlobalContainer>
           <Container size="2" css={{ py: "$6" }}>
-            <Box
-              css={{
-                p: "$2",
-              }}
-            >
-              <Flex>
-                <TextField
-                  size="2"
-                  value={search}
-                  placeholder="Find something tasty"
-                  onChange={(e) => setSearch(e.target.value)}
-                />
-                <Button
-                  size="2"
-                  variant="blue"
-                  css={{ mx: "$2" }}
-                  onClick={() => setCreateNewMusing(true)}
-                >
-                  New musing
-                </Button>
+            <Box>
+              <TextField
+                size="2"
+                value={search}
+                placeholder="Find something tasty"
+                onChange={(e) => setSearch(e.target.value)}
+              />
+              <Flex css={{ mt: "$2", justifyContent: "space-between" }}>
                 <Button
                   size="2"
                   onClick={() => {
@@ -150,11 +138,19 @@ export default function Musings() {
                 >
                   Shuffle
                 </Button>
+                <Button
+                  size="2"
+                  variant="blue"
+                  css={{ mr: "$2" }}
+                  onClick={() => setCreateNewMusing(true)}
+                >
+                  New musing
+                </Button>
               </Flex>
             </Box>
 
             {filteredMusings.length === 0 && (
-              <Box css={{ width: "100vw", mt: "$5" }}>
+              <Box css={{ width: "100vw", mt: "$3" }}>
                 <Text size="3" css={{ color: "$slate9", pl: "$4" }}>
                   Nothing here, friend
                 </Text>
@@ -167,7 +163,7 @@ export default function Musings() {
                 key={m.id}
                 tabIndex={0}
                 css={{
-                  my: "$3",
+                  mt: "$2",
                   "&:hover, &:focus": {
                     outline: `1px solid ${theme.colors.blue9}`,
                   },
@@ -193,24 +189,12 @@ export default function Musings() {
               setSelectedMusing(undefined);
             }}
           >
-            <DialogContent css={{ minWidth: 400 }}>
+            <DialogContent css={{ width: 400, maxWidth: "90vw" }}>
               {editSelectedMusing !== true ? (
                 <Box css={{ p: "$4" }}>
-                  <Flex
-                    css={{
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                    }}
-                  >
-                    <Box>
-                      <Heading>{selectedMusing?.title}</Heading>
-                    </Box>
-                    <Box>
-                      <Text css={{ color: theme.colors.gray9 }} size="1">
-                        {selectedMusing?.id}
-                      </Text>
-                    </Box>
-                  </Flex>
+                  <Box>
+                    <Heading>{selectedMusing?.title}</Heading>
+                  </Box>
                   <Box css={{ mt: "$2", my: "$1" }}>
                     <Text>{selectedMusing?.musing}</Text>
                   </Box>
@@ -218,6 +202,11 @@ export default function Musings() {
                     <Button onClick={() => setEditselectedMusing(true)}>
                       Edit
                     </Button>
+                  </Box>
+                  <Box css={{ mt: "$2" }}>
+                    <Text css={{ color: theme.colors.gray9 }} size="1">
+                      {selectedMusing?.id}
+                    </Text>
                   </Box>
                 </Box>
               ) : (
@@ -262,7 +251,7 @@ export default function Musings() {
               setCreateNewMusing(false);
             }}
           >
-            <DialogContent css={{ minWidth: 400 }}>
+            <DialogContent css={{ width: 400, maxWidth: "90vw" }}>
               <form onSubmit={post}>
                 <Box css={{ p: "$4" }}>
                   <Box>
