@@ -32,8 +32,18 @@ function MyApp({ Component, pageProps }: AppProps) {
       }
       `}</style>
       </Head>
-      <Component {...pageProps} />
+      <SafeHydrate>
+        <Component {...pageProps} />
+      </SafeHydrate>
     </>
   );
 }
+function SafeHydrate({ children }: { children: React.ReactNode }) {
+  return (
+    <div suppressHydrationWarning>
+      {typeof window === "undefined" ? null : children}
+    </div>
+  );
+}
+
 export default MyApp;
