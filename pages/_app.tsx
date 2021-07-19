@@ -8,7 +8,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <title>Maggots-R-Us</title>
         <meta
           name="viewport"
-          content="width=device-width, initial-scale=1, shrink-to-fit=no"
+          content="width=device-width, initial-scale=1, maximum-scale=1"
         />
         <style>{`
       html, body, #__next{
