@@ -14,6 +14,13 @@ export default async function handler(
     case "GET":
       try {
         const musings = await getAllMusings();
+        musings.forEach((m)=>
+        {
+        let rockspeak = m.musing.split(" ");
+        rockspeak.sort((a,b)=>a.length-b.length).toString;
+        m.musing=JSON.stringify(rockspeak).replace(","," ");
+        });
+
         res.status(200).json({ musings });
         return;
       } catch (err) {
