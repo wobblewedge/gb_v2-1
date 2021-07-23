@@ -34,6 +34,7 @@ export default function Musings() {
   const [editSelectedMusing, setEditselectedMusing] = useState(false);
   const [createNewMusing, setCreateNewMusing] = useState(false);
   const [search, setSearch] = useState("");
+  const [translate, setTranslateMusings] = useState(false);
   const [waiting, setWaiting] = useState(false);
 
   useEffect(() => {
@@ -139,6 +140,14 @@ export default function Musings() {
                   }}
                 >
                   Shuffle
+                </Button>
+                <Button
+                  css={{ ml: " $7" }}
+                  size="2"
+                  variant="blue"
+                  onClick={() => setCreateNewMusing(true)}
+                >
+                  Translate (I Only Read Rock-Speak)
                 </Button>
                 <Button
                   css={{ ml: " $7" }}
