@@ -107,6 +107,7 @@ export default function Musings() {
     setSelectedMusing(undefined);
     setEditselectedMusing(false);
     setCreateNewMusing(false);
+    setTranslateMusings(false);
     setSearch("");
   };
 
@@ -144,8 +145,8 @@ export default function Musings() {
                 <Button
                   css={{ ml: " $7" }}
                   size="2"
-                  variant="blue"
-                  onClick={() => setCreateNewMusing(true)}
+                  variant="black"
+                  onClick={() => setTranslateMusings(true)}
                 >
                   Translate (I Only Read Rock-Speak)
                 </Button>
